@@ -5,6 +5,8 @@ import 'package:movie_tracker/application/injectable/injectable.dart';
 import 'package:movie_tracker/application/screens/error_screen.dart';
 import 'package:movie_tracker/application/screens/home_screen.dart';
 import 'package:movie_tracker/application/screens/splash_screen.dart';
+import 'package:movie_tracker/features/movie/presentation/add_movie_page.dart';
+import 'package:movie_tracker/features/movie/presentation/movie_details_page.dart';
 import 'package:movie_tracker/features/movie/presentation/movie_list_page.dart';
 import 'package:movie_tracker/features/settings/presentation/settings_page.dart';
 
@@ -52,8 +54,20 @@ final router = GoRouter(
             GoRoute(
               path: '/movies',
               pageBuilder:
-                  (context, state) =>
-                      const NoTransitionPage(child: MovieListPage()),
+                  (_, __) => const NoTransitionPage(child: MovieListPage()),
+              routes: [
+                GoRoute(
+                  path: 'add',
+                  builder: (context, state) => const AddMoviePage(),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (context, state) {
+                    final id = state.pathParameters['id']!;
+                    return MovieDetailsPage(id: id);
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -62,8 +76,7 @@ final router = GoRouter(
             GoRoute(
               path: '/settings',
               pageBuilder:
-                  (context, state) =>
-                      const NoTransitionPage(child: SettingsPage()),
+                  (_, __) => const NoTransitionPage(child: SettingsPage()),
             ),
           ],
         ),

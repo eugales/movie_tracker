@@ -7,6 +7,8 @@ import 'package:movie_tracker/application/router.dart';
 import 'package:movie_tracker/application/theme/theme_service.dart';
 import 'package:movie_tracker/application/theme/theme_state.dart';
 import 'package:movie_tracker/application/theme/theme_view_model.dart';
+import 'package:movie_tracker/features/movie/domain/repositories/movie_repository.dart';
+import 'package:movie_tracker/features/movie/presentation/movie_view_model.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -24,8 +26,15 @@ class Providers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeViewModel(getIt<ThemeService>())..load(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeViewModel(getIt<ThemeService>())..load(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MovieViewModel(getIt<MovieRepository>()),
+        ),
+      ],
       builder: (context, child) => MyApp(),
     );
   }

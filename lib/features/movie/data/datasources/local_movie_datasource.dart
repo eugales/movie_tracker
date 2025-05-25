@@ -15,7 +15,9 @@ class LocalMovieDatasourceImpl implements LocalMovieDatasource {
 
   final SharedPreferences prefs;
 
-  LocalMovieDatasourceImpl(this.prefs);
+  LocalMovieDatasourceImpl(this.prefs) {
+    prefs.remove(_key); // Данные не сохраняются при перезапуске.
+  }
 
   @override
   Future<List<MovieModel>> getMovies() async {

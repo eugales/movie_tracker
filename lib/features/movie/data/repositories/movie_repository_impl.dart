@@ -36,7 +36,7 @@ class MovieRepositoryImpl implements MovieRepository {
     final current = await local.getMovies();
     final updated = [...current, newModel];
     await local.saveMovies(updated);
-    await remote.uploadMovie(newModel);
+    // await remote.uploadMovie(newModel); // Данные не сохраняются при перезапуске.
   }
 
   @override
