@@ -20,6 +20,7 @@ import 'package:movie_tracker/application/remote_config/remote_config_service.da
     as _i496;
 import 'package:movie_tracker/application/remote_config/remote_config_view_model.dart'
     as _i131;
+import 'package:movie_tracker/application/theme/theme_service.dart' as _i758;
 import 'package:movie_tracker/features/movie/data/datasources/local_movie_datasource.dart'
     as _i65;
 import 'package:movie_tracker/features/movie/data/datasources/remote_movie_datasource.dart'
@@ -61,6 +62,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i345.FirebaseDatabase>(() => registerModule.database);
+    gh.lazySingleton<_i758.ThemeService>(() => _i758.ThemeService());
     gh.factory<_i496.RemoteConfigService>(
       () => _i496.RemoteConfigService(gh<_i345.FirebaseDatabase>()),
     );
