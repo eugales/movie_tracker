@@ -5,6 +5,7 @@ import 'package:movie_tracker/application/injectable/injectable.dart';
 import 'package:movie_tracker/application/screens/error_screen.dart';
 import 'package:movie_tracker/application/screens/home_screen.dart';
 import 'package:movie_tracker/application/screens/splash_screen.dart';
+import 'package:movie_tracker/application/screens/webview_screen.dart';
 import 'package:movie_tracker/features/movie/presentation/add_movie_page.dart';
 import 'package:movie_tracker/features/movie/presentation/movie_details_page.dart';
 import 'package:movie_tracker/features/movie/presentation/movie_list_page.dart';
@@ -40,9 +41,7 @@ final router = GoRouter(
     GoRoute(
       path: '/webview',
       pageBuilder:
-          (context, state) => const NoTransitionPage(
-            child: Scaffold(body: Center(child: Text('webview'))),
-          ),
+          (context, state) => const NoTransitionPage(child: WebViewScreen()),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
