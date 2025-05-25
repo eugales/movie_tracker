@@ -14,6 +14,12 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:movie_tracker/application/injectable/register_module.dart'
     as _i971;
+import 'package:movie_tracker/application/remote_config/remote_config.dart'
+    as _i509;
+import 'package:movie_tracker/application/remote_config/remote_config_service.dart'
+    as _i496;
+import 'package:movie_tracker/application/remote_config/remote_config_view_model.dart'
+    as _i131;
 import 'package:movie_tracker/features/movie/data/datasources/local_movie_datasource.dart'
     as _i65;
 import 'package:movie_tracker/features/movie/data/datasources/remote_movie_datasource.dart'
@@ -55,6 +61,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i345.FirebaseDatabase>(() => registerModule.database);
+    gh.factory<_i496.RemoteConfigService>(
+      () => _i496.RemoteConfigService(gh<_i345.FirebaseDatabase>()),
+    );
     gh.factory<_i1009.LocalSettingsDatasource>(
       () => _i1009.LocalSettingsDatasourceImpl(gh<_i460.SharedPreferences>()),
     );
@@ -63,6 +72,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i487.SettingsRepository>(
       () => _i235.SettingsRepositoryImpl(gh<_i1009.LocalSettingsDatasource>()),
+    );
+    gh.singleton<_i131.RemoteConfigViewModel>(
+      () => _i131.RemoteConfigViewModel(gh<_i509.RemoteConfigService>()),
     );
     gh.factory<_i939.RemoteMovieDatasource>(
       () => _i939.RemoteMovieDatasourceImpl(gh<_i345.FirebaseDatabase>()),

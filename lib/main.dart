@@ -2,7 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movie_tracker/core/injectable/injectable.dart';
+import 'package:movie_tracker/application/injectable/injectable.dart';
+import 'package:movie_tracker/application/router.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,12 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Center(child: const Text('Flutter Demo Home Page')),
+      routerConfig: router,
     );
   }
 }
