@@ -13,3 +13,7 @@ firebase.json
 lib/firebase_options.dart
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+
+
+## Видео демонстрация
+https://drive.google.com/file/d/10MaIipe1tw1KVw44EhpFw3Fj7Q81r8bx/view?usp=sharing
