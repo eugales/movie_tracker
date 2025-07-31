@@ -1,0 +1,80 @@
+name: Flutter Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Restore .env files
+        run: |
+          mkdir -p assets
+          echo "${{ secrets.ENV_DEV_CONTENT }}" > assets/.env
+
+      - name: Restore Google services secrets
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 -d > android/app/google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_IOS }}" | base64 -d > ios/Runner/GoogleService-Info.plist
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.4'  # Укажи свою версию
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=./upload-keystore.jks" >> android/key.properties
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-ios:
+    name: Build iOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Restore .env files
+        run: |
+          mkdir -p assets
+          echo "${{ secrets.ENV_DEV_CONTENT }}" > assets/.env
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Install CocoaPods
+        run: |
+          brew install cocoapods
+          pod install --project-directory=ios
+
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
